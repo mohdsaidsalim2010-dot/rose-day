@@ -3,59 +3,135 @@
 <head>
 <meta charset="UTF-8">
 <title>Rose Day Surprise 🌹</title>
+
 <style>
-  body {
-    margin: 0;
-    height: 100vh;
-    background: linear-gradient(135deg, #ff758c, #ff7eb3);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-family: Arial, sans-serif;
-  }
+* {
+  box-sizing: border-box;
+  font-family: 'Segoe UI', sans-serif;
+}
 
-  .box {
-    background: #fff;
-    padding: 30px;
-    border-radius: 20px;
-    text-align: center;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.25);
-    width: 320px;
-  }
+body {
+  margin: 0;
+  height: 100vh;
+  overflow: hidden;
+  background: linear-gradient(135deg, #ff4e8a, #ff9a9e, #fad0c4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
-  h2 {
-    color: #e60026;
-    margin-bottom: 20px;
-  }
+/* Floating hearts */
+.heart {
+  position: absolute;
+  font-size: 20px;
+  animation: floatUp 6s linear infinite;
+  opacity: 0.7;
+}
 
-  .roses {
-    display: flex;
-    justify-content: space-between;
-    font-size: 60px;
-    cursor: pointer;
-  }
+@keyframes floatUp {
+  0% { transform: translateY(100vh); opacity: 0; }
+  20% { opacity: 1; }
+  100% { transform: translateY(-10vh); opacity: 0; }
+}
 
-  .roses span:hover {
-    transform: scale(1.2);
-    transition: 0.2s;
-  }
+/* Intro screen */
+.intro {
+  background: rgba(255,255,255,0.95);
+  padding: 35px;
+  border-radius: 25px;
+  text-align: center;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+  animation: fadeIn 1.2s ease;
+}
 
-  .message {
-    margin-top: 20px;
-    font-size: 18px;
-    color: #333;
-    display: none;
-  }
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
+}
 
-  .big-rose {
-    font-size: 80px;
-    margin-top: 10px;
-  }
+.intro h1 {
+  color: #e6005c;
+  margin-bottom: 10px;
+}
+
+.intro p {
+  color: #555;
+  font-size: 18px;
+}
+
+.start-btn {
+  margin-top: 20px;
+  padding: 12px 30px;
+  font-size: 18px;
+  border: none;
+  border-radius: 30px;
+  background: #ff4e8a;
+  color: white;
+  cursor: pointer;
+  box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+}
+
+.start-btn:hover {
+  transform: scale(1.05);
+}
+
+/* Game box */
+.game {
+  display: none;
+  background: white;
+  padding: 30px;
+  border-radius: 25px;
+  text-align: center;
+  box-shadow: 0 15px 30px rgba(0,0,0,0.25);
+  width: 330px;
+}
+
+.roses {
+  display: flex;
+  justify-content: space-between;
+  font-size: 65px;
+  cursor: pointer;
+}
+
+.roses span:hover {
+  transform: scale(1.2);
+}
+
+.message {
+  display: none;
+  margin-top: 20px;
+}
+
+.big-rose {
+  font-size: 90px;
+}
 </style>
 </head>
+
 <body>
 
-<div class="box">
+<!-- Floating hearts -->
+<script>
+for (let i = 0; i < 20; i++) {
+  let h = document.createElement("div");
+  h.className = "heart";
+  h.innerHTML = Math.random() > 0.5 ? "💖" : "🌸";
+  h.style.left = Math.random() * 100 + "vw";
+  h.style.animationDuration = 4 + Math.random() * 4 + "s";
+  document.body.appendChild(h);
+}
+</script>
+
+<!-- Intro -->
+<div class="intro" id="intro">
+  <h1>🌹 Rose Day Surprise 🌹</h1>
+  <p>A little game made with love 💕<br>
+     Pick the right rose to unlock your message</p>
+  <button class="start-btn" onclick="startGame()">Tap to start 💖</button>
+</div>
+
+<!-- Game -->
+<div class="game" id="game">
   <h2>Pick one rose 🌹</h2>
 
   <div class="roses">
@@ -66,22 +142,27 @@
 
   <div class="message" id="msg">
     <h3>🎉 Success! Yahoo!</h3>
-    <p>You got the rose 💖</p>
+    <p>You got the rose 💕</p>
     <div class="big-rose">🌹</div>
     <p><strong>Happy Rose Day Muthew 😁👅🌹</strong></p>
   </div>
 </div>
 
 <script>
-  function wrong() {
-    alert("Oops 😜 Try again!");
-  }
+function startGame() {
+  document.getElementById("intro").style.display = "none";
+  document.getElementById("game").style.display = "block";
+}
 
-  function correct() {
-    document.querySelector(".roses").style.display = "none";
-    document.querySelector("h2").style.display = "none";
-    document.getElementById("msg").style.display = "block";
-  }
+function wrong() {
+  alert("Hehe 😜 Not this one, try again!");
+}
+
+function correct() {
+  document.querySelector(".roses").style.display = "none";
+  document.querySelector("h2").style.display = "none";
+  document.getElementById("msg").style.display = "block";
+}
 </script>
 
 </body>
