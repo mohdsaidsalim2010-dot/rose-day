@@ -14,7 +14,7 @@ body {
   margin: 0;
   height: 100vh;
   overflow: hidden;
-  background: linear-gradient(135deg, #ff4e8a, #ff9a9e, #fad0c4);
+  background: linear-gradient(135deg, #ff3c7d, #ff9a9e, #fad0c4);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -23,9 +23,9 @@ body {
 /* Floating hearts */
 .heart {
   position: absolute;
-  font-size: 20px;
+  font-size: 22px;
   animation: floatUp 6s linear infinite;
-  opacity: 0.7;
+  opacity: 0.8;
 }
 
 @keyframes floatUp {
@@ -34,29 +34,22 @@ body {
   100% { transform: translateY(-10vh); opacity: 0; }
 }
 
-/* Intro screen */
-.intro {
-  background: rgba(255,255,255,0.95);
+/* Intro */
+.intro, .game {
+  background: rgba(255,255,255,0.96);
   padding: 35px;
   border-radius: 25px;
   text-align: center;
   box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-  animation: fadeIn 1.2s ease;
+  animation: fadeIn 1s ease;
+  width: 340px;
 }
+
+.game { display: none; }
 
 @keyframes fadeIn {
   from { opacity: 0; transform: scale(0.9); }
   to { opacity: 1; transform: scale(1); }
-}
-
-.intro h1 {
-  color: #e6005c;
-  margin-bottom: 10px;
-}
-
-.intro p {
-  color: #555;
-  font-size: 18px;
 }
 
 .start-btn {
@@ -65,36 +58,39 @@ body {
   font-size: 18px;
   border: none;
   border-radius: 30px;
-  background: #ff4e8a;
+  background: #ff3c7d;
   color: white;
   cursor: pointer;
-  box-shadow: 0 8px 15px rgba(0,0,0,0.2);
-}
-
-.start-btn:hover {
-  transform: scale(1.05);
-}
-
-/* Game box */
-.game {
-  display: none;
-  background: white;
-  padding: 30px;
-  border-radius: 25px;
-  text-align: center;
-  box-shadow: 0 15px 30px rgba(0,0,0,0.25);
-  width: 330px;
 }
 
 .roses {
   display: flex;
   justify-content: space-between;
-  font-size: 65px;
-  cursor: pointer;
+  margin-top: 20px;
 }
 
-.roses span:hover {
-  transform: scale(1.2);
+.rose {
+  font-size: 65px;
+  transition: transform 0.4s ease;
+}
+
+/* fake roses */
+.fake {
+  cursor: not-allowed;
+}
+
+/* move animation */
+.move-left {
+  transform: translateX(-120px) rotate(-20deg);
+}
+
+.move-right {
+  transform: translateX(120px) rotate(20deg);
+}
+
+/* real rose */
+.real {
+  cursor: pointer;
 }
 
 .message {
@@ -110,9 +106,8 @@ body {
 
 <body>
 
-<!-- Floating hearts -->
 <script>
-for (let i = 0; i < 20; i++) {
+for (let i = 0; i < 18; i++) {
   let h = document.createElement("div");
   h.className = "heart";
   h.innerHTML = Math.random() > 0.5 ? "💖" : "🌸";
@@ -125,24 +120,24 @@ for (let i = 0; i < 20; i++) {
 <!-- Intro -->
 <div class="intro" id="intro">
   <h1>🌹 Rose Day Surprise 🌹</h1>
-  <p>A little game made with love 💕<br>
-     Pick the right rose to unlock your message</p>
-  <button class="start-btn" onclick="startGame()">Tap to start 💖</button>
+  <p>Only one rose is meant for you 💕<br>
+     Can you catch it?</p>
+  <button class="start-btn" onclick="startGame()">Start 💖</button>
 </div>
 
 <!-- Game -->
 <div class="game" id="game">
-  <h2>Pick one rose 🌹</h2>
+  <h2>Tap the real rose 🌹</h2>
 
   <div class="roses">
-    <span onclick="wrong()">🌹</span>
-    <span onclick="correct()">🌹</span>
-    <span onclick="wrong()">🌹</span>
+    <div class="rose fake" onclick="move(this, 'left')">🌹</div>
+    <div class="rose real" onclick="correct()">🌹</div>
+    <div class="rose fake" onclick="move(this, 'right')">🌹</div>
   </div>
 
   <div class="message" id="msg">
     <h3>🎉 Success! Yahoo!</h3>
-    <p>You got the rose 💕</p>
+    <p>You caught the real rose 💖</p>
     <div class="big-rose">🌹</div>
     <p><strong>Happy Rose Day Muthew 😁👅🌹</strong></p>
   </div>
@@ -154,8 +149,8 @@ function startGame() {
   document.getElementById("game").style.display = "block";
 }
 
-function wrong() {
-  alert("Hehe 😜 Not this one, try again!");
+function move(el, dir) {
+  el.classList.add(dir === 'left' ? 'move-left' : 'move-right');
 }
 
 function correct() {
