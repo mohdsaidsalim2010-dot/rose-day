@@ -14,83 +14,68 @@ body {
   margin: 0;
   height: 100vh;
   overflow: hidden;
-  background: linear-gradient(135deg, #ff3c7d, #ff9a9e, #fad0c4);
+  background: linear-gradient(135deg, #ff4b7d, #ff9a9e, #fad0c4);
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-/* Floating hearts */
-.heart {
+/* floating flowers */
+.flower {
   position: absolute;
-  font-size: 22px;
+  font-size: 24px;
   animation: floatUp 6s linear infinite;
   opacity: 0.8;
 }
 
 @keyframes floatUp {
-  0% { transform: translateY(100vh); opacity: 0; }
+  0% { transform: translateY(100vh) scale(0.5); opacity: 0; }
   20% { opacity: 1; }
-  100% { transform: translateY(-10vh); opacity: 0; }
+  100% { transform: translateY(-10vh) scale(1.2); opacity: 0; }
 }
 
-/* Intro */
-.intro, .game {
-  background: rgba(255,255,255,0.96);
+/* box */
+.box {
+  background: rgba(255,255,255,0.97);
   padding: 35px;
   border-radius: 25px;
   text-align: center;
   box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-  animation: fadeIn 1s ease;
   width: 340px;
+  animation: fadeIn 1s ease;
 }
-
-.game { display: none; }
 
 @keyframes fadeIn {
   from { opacity: 0; transform: scale(0.9); }
   to { opacity: 1; transform: scale(1); }
 }
 
-.start-btn {
-  margin-top: 20px;
-  padding: 12px 30px;
-  font-size: 18px;
-  border: none;
-  border-radius: 30px;
-  background: #ff3c7d;
-  color: white;
-  cursor: pointer;
-}
-
 .roses {
   display: flex;
   justify-content: space-between;
-  margin-top: 20px;
+  margin-top: 25px;
 }
 
 .rose {
   font-size: 65px;
+  cursor: pointer;
   transition: transform 0.4s ease;
 }
 
-/* fake roses */
-.fake {
-  cursor: not-allowed;
+.hidden {
+  visibility: hidden;
 }
 
-/* move animation */
-.move-left {
-  transform: translateX(-120px) rotate(-20deg);
+.middle {
+  font-size: 80px;
+  margin-top: 20px;
+  animation: glow 1.5s infinite;
 }
 
-.move-right {
-  transform: translateX(120px) rotate(20deg);
-}
-
-/* real rose */
-.real {
-  cursor: pointer;
+@keyframes glow {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.15); }
+  100% { transform: scale(1); }
 }
 
 .message {
@@ -107,55 +92,51 @@ body {
 <body>
 
 <script>
-for (let i = 0; i < 18; i++) {
-  let h = document.createElement("div");
-  h.className = "heart";
-  h.innerHTML = Math.random() > 0.5 ? "💖" : "🌸";
-  h.style.left = Math.random() * 100 + "vw";
-  h.style.animationDuration = 4 + Math.random() * 4 + "s";
-  document.body.appendChild(h);
+/* floating flowers */
+for (let i = 0; i < 20; i++) {
+  let f = document.createElement("div");
+  f.className = "flower";
+  f.innerHTML = Math.random() > 0.5 ? "🌸" : "💮";
+  f.style.left = Math.random() * 100 + "vw";
+  f.style.animationDuration = 4 + Math.random() * 4 + "s";
+  document.body.appendChild(f);
 }
 </script>
 
-<!-- Intro -->
-<div class="intro" id="intro">
-  <h1>🌹 Rose Day Surprise 🌹</h1>
-  <p>Only one rose is meant for you 💕<br>
-     Can you catch it?</p>
-  <button class="start-btn" onclick="startGame()">Start 💖</button>
-</div>
+<div class="box">
+  <h2 id="title">Pick a rose 🌹</h2>
 
-<!-- Game -->
-<div class="game" id="game">
-  <h2>Tap the real rose 🌹</h2>
-
-  <div class="roses">
-    <div class="rose fake" onclick="move(this, 'left')">🌹</div>
-    <div class="rose real" onclick="correct()">🌹</div>
-    <div class="rose fake" onclick="move(this, 'right')">🌹</div>
+  <!-- Stage 1 -->
+  <div class="roses" id="stage1">
+    <div class="rose" onclick="reveal()">🌹</div>
+    <div class="rose" onclick="reveal()">🌹</div>
   </div>
 
+  <!-- Stage 2 -->
+  <div id="stage2" class="hidden">
+    <p>✨ A special rose appeared ✨</p>
+    <div class="middle" onclick="win()">🌹</div>
+  </div>
+
+  <!-- Final message -->
   <div class="message" id="msg">
     <h3>🎉 Success! Yahoo!</h3>
-    <p>You caught the real rose 💖</p>
+    <p>You unlocked the rose 💖</p>
     <div class="big-rose">🌹</div>
     <p><strong>Happy Rose Day Muthew 😁👅🌹</strong></p>
   </div>
 </div>
 
 <script>
-function startGame() {
-  document.getElementById("intro").style.display = "none";
-  document.getElementById("game").style.display = "block";
+function reveal() {
+  document.getElementById("stage1").style.display = "none";
+  document.getElementById("stage2").classList.remove("hidden");
+  document.getElementById("title").innerText = "Click the glowing rose 🌸";
 }
 
-function move(el, dir) {
-  el.classList.add(dir === 'left' ? 'move-left' : 'move-right');
-}
-
-function correct() {
-  document.querySelector(".roses").style.display = "none";
-  document.querySelector("h2").style.display = "none";
+function win() {
+  document.getElementById("stage2").style.display = "none";
+  document.getElementById("title").style.display = "none";
   document.getElementById("msg").style.display = "block";
 }
 </script>
